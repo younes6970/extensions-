@@ -69,7 +69,7 @@
     const next=convertToDate(displayCal,y,m,1);if(next){anchor=next;drawMonth()}
   }
   function drawMonth(){
-    const el=widgetRoot;if(!el||!el.isConnected&&el.parentNode===null)return;
+    const el=widgetRoot;if(!el)return;
     const p=parts(anchor,displayCal),first=convertToDate(displayCal,p.y,p.m,1);
     if(!first)return;
     el.querySelector('.cal-title').textContent=monthNames[displayCal][p.m-1]+' '+persianDigits(p.y);
