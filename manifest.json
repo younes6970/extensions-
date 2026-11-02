@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "MySpace — New Tab Dashboard",
-  "description": "Futuristic new tab with 3 themes, Persian/English, calendars, crypto market and football standings.",
-  "version": "2.3.0",
+  "description": "Personal desktop-style new tab OS with installed website shortcuts, window manager, local file picker and legacy dashboard apps.",
+  "version": "3.0.0",
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   },
