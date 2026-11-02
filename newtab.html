@@ -6,6 +6,7 @@
   <title>MySpace · New Tab</title>
   <link rel="stylesheet" href="styles.css">
   <script src="calendar.js" defer></script>
+  <script src="markets.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -24,6 +25,6 @@
     <footer>MYSPACE · با هر تب جدید، یک شروع جدید <span id="saveIndicator"></span></footer>
   </div>
   <div class="overlay hidden" id="overlay"></div>
-  <aside class="drawer hidden" id="drawer" aria-label="تنظیمات داشبورد"><div class="drawer-head"><div><span class="eyebrow">MYSPACE SETTINGS</span><h2>شخصی‌سازی</h2></div><button id="closeDrawer" class="icon-btn" aria-label="بستن">✕</button></div><p class="help">ویجت‌ها را روشن یا خاموش کن. با دکمه‌های جابه‌جایی ترتیب نمایش را تغییر بده.</p><div id="widgetSettings"></div><hr><label class="field-label" for="userName">نام شما</label><input class="setting-input" id="userName" maxlength="32" placeholder="مثلاً یونس"><label class="field-label" for="accentColor">رنگ اصلی</label><input type="color" id="accentColor" value="#b7a0ff"><button id="resetBtn" class="reset-btn">بازنشانی تنظیمات</button><p class="help">اطلاعات فقط در حافظه مرورگر شما ذخیره می‌شود.</p></aside>
+  <aside class="drawer hidden" id="drawer" aria-label="تنظیمات داشبورد"><div class="drawer-head"><div><span class="eyebrow">MYSPACE SETTINGS</span><h2>شخصی‌سازی</h2></div><button id="closeDrawer" class="icon-btn" aria-label="بستن">✕</button></div><p class="help">ویجت‌ها را روشن یا خاموش کن. با دکمه‌های جابه‌جایی ترتیب نمایش را تغییر بده.</p><div id="widgetSettings"></div><hr><label class="field-label" for="themeChoice">تم / Theme</label><select id="themeChoice" class="setting-input"><option value="minimal">Minimal Future OS</option><option value="space">Space Command</option><option value="cyber">Cyber Neon</option></select><label class="field-label" for="languageChoice">زبان / Language</label><select id="languageChoice" class="setting-input"><option value="fa">فارسی</option><option value="en">English</option></select><label class="field-label" for="motionChoice">انیمیشن / Motion</label><input id="motionChoice" type="checkbox" checked><hr><label class="field-label" for="userName">نام شما</label><input class="setting-input" id="userName" maxlength="32" placeholder="مثلاً یونس"><label class="field-label" for="accentColor">رنگ اصلی</label><input type="color" id="accentColor" value="#b7a0ff"><button id="resetBtn" class="reset-btn">بازنشانی تنظیمات</button><p class="help">اطلاعات فقط در حافظه مرورگر شما ذخیره می‌شود.</p></aside>
 </body>
 </html>
