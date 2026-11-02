@@ -8,7 +8,7 @@ async function derive(password,salt){const raw=await crypto.subtle.importKey('ra
 async function readVault(){const data=await chrome.storage.local.get('myspaceVaultV1');return data.myspaceVaultV1}
 async function saveVault(){const iv=crypto.getRandomValues(new Uint8Array(12));const plain=encoder.encode(JSON.stringify({records}));const encrypted=await crypto.subtle.encrypt({name:'AES-GCM',iv},secretKey,plain);await chrome.storage.local.set({myspaceVaultV1:{salt:base64(vaultSalt),iv:base64(iv),data:base64(encrypted),v:1}})}
 function notify(s){$('status').textContent=s}
-function lock(){secretKey=null;records=[];clearTimeout(idleHandle);$('records').replaceChildren();$('workspace').hidden=true;$('unlock').hidden=false;$('master').value='';notify('گاوصندوق قفل شد.')}
+function lock(){secretKey=null;records=[];clearTimeout(idleHandle);$('records').replaceChildren();$('workspace').hidden=true;$('unlock').hidden=false;$('master').value='';$('entryForm').reset();$('backupPassword').value='';editId=null;notify('گاوصندوق قفل شد.')}
 function activity(){if(!secretKey)return;clearTimeout(idleHandle);idleHandle=setTimeout(lock,180000)}
 document.addEventListener('pointerdown',activity);document.addEventListener('keydown',activity);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&secretKey)lock()});
