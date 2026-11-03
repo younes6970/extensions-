@@ -32,9 +32,13 @@ function previewIcon(){const p=$('iconPreview');p.replaceChildren();const u=safe
 $('installUrl').addEventListener('input',previewIcon);
 $('iconMode').addEventListener('change',()=>{$('customIconRow').hidden=$('iconMode').value!=='custom';previewIcon()});
 $('customIconFile').addEventListener('change',async()=>{const file=$('customIconFile').files[0];if(!file)return;try{const img=document.createElement('img');img.src=await readIcon(file);const p=$('iconPreview');p.replaceChildren(img)}catch(err){toast(err.message)}});
-function openInstall(){$('installDialog').showModal()}
+function closeInstall(){const dialog=$('installDialog');if(dialog.open)dialog.close();$('installForm').reset();$('customIconRow').hidden=true;$('iconPreview').replaceChildren();}
+function openInstall(){if(!$('installDialog').open)$('installDialog').showModal()}
 $('installButton').onclick=$('launcherInstall').onclick=openInstall;
-$('installForm').addEventListener('submit',async e=>{if(e.submitter?.value!=='install')return;e.preventDefault();const name=$('installName').value.trim(),url=safeUrl($('installUrl').value.trim());if(!name||!url){toast('HTTPS URL required');return}if(apps.length>=60){toast('App limit reached');return}if(apps.some(a=>a.url===url)){toast('Website already installed');return}const app={id:'web-'+crypto.randomUUID(),name:name.slice(0,45),type:'web',url};if($('iconMode').value==='custom'){try{app.customIcon=await readIcon($('customIconFile').files[0])}catch(err){toast(err.message);return}}apps.push(app);await persist();render();$('installDialog').close();$('installForm').reset();$('customIconRow').hidden=true;$('iconPreview').replaceChildren();toast('App added to desktop');openApp(app)});
+$('cancelInstall').onclick=$('closeInstallDialog').onclick=closeInstall;
+$('installDialog').addEventListener('click',e=>{if(e.target===$('installDialog'))closeInstall()});
+$('installDialog').addEventListener('close',()=>{$('installForm').reset();$('customIconRow').hidden=true;$('iconPreview').replaceChildren()});
+$('installForm').addEventListener('submit',async e=>{e.preventDefault();const name=$('installName').value.trim(),url=safeUrl($('installUrl').value.trim());if(!name||!url){toast('HTTPS URL required');return}if(apps.length>=60){toast('App limit reached');return}if(apps.some(a=>a.url===url)){toast('Website already installed');return}const app={id:'web-'+crypto.randomUUID(),name:name.slice(0,45),type:'web',url};if($('iconMode').value==='custom'){try{app.customIcon=await readIcon($('customIconFile').files[0])}catch(err){toast(err.message);return}}apps.push(app);await persist();render();closeInstall();toast('App added to desktop');openApp(app)});
 $('launcherButton').onclick=()=>{$('launcher').classList.toggle('hidden');$('appSearch').focus()};
 $('closeLauncher').onclick=()=>$('launcher').classList.add('hidden');
 $('appSearch').oninput=render;
