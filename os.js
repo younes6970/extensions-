@@ -57,15 +57,69 @@ $('webSearchForm').addEventListener('submit',event=>{
   const base=searchEngines[engine]||searchEngines.google;
   window.open(base+encodeURIComponent(query),'_blank','noopener,noreferrer');
 });
+const engineInfo={
+  google:{name:'Google',domain:'google.com'},
+  bing:{name:'Bing',domain:'bing.com'},
+  duckduckgo:{name:'DuckDuckGo',domain:'duckduckgo.com'},
+  brave:{name:'Brave',domain:'brave.com'},
+  ecosia:{name:'Ecosia',domain:'ecosia.org'},
+  startpage:{name:'Startpage',domain:'startpage.com'}
+};
+const engineIconUrl=domain=>'https://www.google.com/s2/favicons?domain='+encodeURIComponent(domain)+'&sz=64';
+const engineMenu=$('engineMenu');
+function syncEngineUI(){
+  const selected=Object.hasOwn(engineInfo,$('searchEngine').value)?$('searchEngine').value:'google';
+  $('engineIcon').src=engineIconUrl(engineInfo[selected].domain);
+  $('engineIcon').onerror=()=>{$('engineIcon').hidden=true};
+  $('engineIcon').hidden=false;
+  $('engineName').textContent=engineInfo[selected].name;
+  for(const button of engineMenu.querySelectorAll('button[data-engine]')){
+    const active=button.dataset.engine===selected;
+    button.setAttribute('aria-pressed',String(active));
+    button.classList.toggle('selected',active);
+  }
+}
+function setEngineMenu(open){
+  engineMenu.hidden=!open;
+  $('engineToggle').setAttribute('aria-expanded',String(open));
+}
+for(const [id,engine] of Object.entries(engineInfo)){
+  const b=document.createElement('button');
+  b.type='button';b.className='engine-option';b.dataset.engine=id;
+  const logo=document.createElement('img');
+  logo.src=engineIconUrl(engine.domain);
+  logo.alt='';logo.width=25;logo.height=25;logo.loading='lazy';
+  logo.onerror=()=>logo.style.visibility='hidden';
+  const label=document.createElement('span');label.textContent=engine.name;
+  const check=document.createElement('span');check.className='engine-check';check.textContent='✓';
+  b.append(logo,label,check);
+  b.onclick=()=>{
+    $('searchEngine').value=id;
+    $('searchEngine').dispatchEvent(new Event('change'));
+    setEngineMenu(false);
+    $('webSearchInput').focus();
+  };
+  engineMenu.append(b);
+}
+$('engineToggle').onclick=()=>setEngineMenu(engineMenu.hidden);
 $('searchEngine').addEventListener('change',async event=>{
   const engine=event.target.value;
   if(!Object.hasOwn(searchEngines,engine))return;
+  syncEngineUI();
   try{await chrome.storage.local.set({myspaceSearchEngine:engine})}
   catch{toast('ذخیره موتور جست‌وجو ناموفق بود')}
 });
+document.addEventListener('pointerdown',e=>{
+  if(!e.target.closest('.search-engine-picker'))setEngineMenu(false);
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')setEngineMenu(false);
+});
+syncEngineUI();
 chrome.storage.local.get('myspaceSearchEngine').then(result=>{
   if(Object.hasOwn(searchEngines,result.myspaceSearchEngine))
     $('searchEngine').value=result.myspaceSearchEngine;
-}).catch(()=>{});
+  syncEngineUI();
+}).catch(()=>syncEngineUI());
 function clock(){const n=new Date();$('clock').textContent=n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});$('date').textContent=n.toLocaleDateString('fa-IR',{weekday:'long',day:'numeric',month:'long'})}clock();setInterval(clock,15000);
 chrome.storage.local.get(['myspaceInstalledApps','myspaceDesktopPositions']).then(r=>{desktopPositions=r.myspaceDesktopPositions&&typeof r.myspaceDesktopPositions==='object'?r.myspaceDesktopPositions:{};apps=Array.isArray(r.myspaceInstalledApps)?r.myspaceInstalledApps.filter(a=>a&&a.type==='web'&&safeUrl(a.url)&&typeof a.name==='string'&&(!a.customIcon||(typeof a.customIcon==='string'&&a.customIcon.startsWith('data:image/')&&a.customIcon.length<300000))).slice(0,60):[];render()}).catch(()=>render());
