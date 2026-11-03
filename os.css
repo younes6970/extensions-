@@ -57,3 +57,33 @@ dialog [hidden]{display:none!important}
 .dock{max-width:calc(100vw - 24px);overflow-x:auto;scrollbar-width:thin}
 .window-controls button[title="باز کردن در تب مرورگر"]{background:#cfeaf8;color:#175c86;font-weight:800}
 @media(max-width:800px){.desktop{left:3%;top:39%;width:94%;height:43%}.desktop-app{width:90px;min-height:95px}.desktop-app .app-icon{width:62px;height:62px}}
+
+
+/* True full-screen maximized OS windows. Keep Chrome browser chrome intact. */
+.window-layer:has(.os-window.is-maximized){z-index:65}
+.os-window.is-maximized{
+  position:fixed!important;
+  top:0!important;left:0!important;right:0!important;bottom:0!important;
+  width:100vw!important;height:100vh!important;height:100dvh!important;
+  max-width:none!important;max-height:none!important;
+  min-width:0!important;min-height:0!important;
+  border-radius:0!important;border:0!important;
+  resize:none!important;
+}
+@media(max-width:800px){
+  .os-window.is-maximized{
+    top:0!important;left:0!important;width:100vw!important;
+    height:100vh!important;height:100dvh!important
+  }
+}
+/* Installed website artwork fills its tile, with rounded Android-style corners. */
+.desktop-app .app-icon:has(.web-app-icon),
+.desktop-app .web-app-icon,
+.desktop-app .web-app-icon img{
+  border-radius:22px!important;
+  overflow:hidden;
+}
+.desktop-app .app-icon:has(.web-app-icon){padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important}
+.desktop-app .web-app-icon img{display:block;width:100%!important;height:100%!important;object-fit:cover}
+.launcher-item .web-app-icon,.launcher-item .web-app-icon img{border-radius:16px!important;overflow:hidden}
+.dock-apps .web-app-icon,.dock-apps .web-app-icon img,.minimized-apps .web-app-icon,.minimized-apps .web-app-icon img{border-radius:12px!important;overflow:hidden}
