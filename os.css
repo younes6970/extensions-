@@ -87,3 +87,44 @@ dialog [hidden]{display:none!important}
 .desktop-app .web-app-icon img{display:block;width:100%!important;height:100%!important;object-fit:cover}
 .launcher-item .web-app-icon,.launcher-item .web-app-icon img{border-radius:16px!important;overflow:hidden}
 .dock-apps .web-app-icon,.dock-apps .web-app-icon img,.minimized-apps .web-app-icon,.minimized-apps .web-app-icon img{border-radius:12px!important;overflow:hidden}
+
+
+/* MySpace OS universal search: anchored above the home screen, independently of app windows */
+.os-search{
+  position:absolute;z-index:12;top:76px;left:50%;transform:translateX(-50%);
+  width:min(680px,calc(100vw - 48px));height:62px;
+  display:flex;align-items:center;gap:11px;padding:7px 9px 7px 19px;
+  border:1px solid rgba(255,255,255,.85);
+  border-radius:22px;
+  background:rgba(242,249,255,.84);
+  color:#254b6d;
+  box-shadow:0 18px 58px rgba(12,37,71,.26),inset 0 1px 0 #fff;
+  backdrop-filter:blur(28px);direction:ltr;
+}
+.os-search:focus-within{background:rgba(252,254,255,.97);box-shadow:0 18px 58px rgba(12,37,71,.34),0 0 0 3px #a4e8ff77}
+.os-search-icon{font-size:29px;line-height:1;color:#4c7495;width:27px;text-align:center}
+.os-search input{
+  flex:1;min-width:0;border:0;outline:0;background:transparent;
+  color:#183d5b;font:500 15px system-ui,"Segoe UI",sans-serif;
+  padding:0;direction:auto;
+}
+.os-search input::placeholder{color:#6e89a2}
+.os-search select{
+  min-width:120px;max-width:158px;
+  border:1px solid #c7d9e8;border-radius:12px;
+  background:#e7f0fa;color:#285171;padding:10px 7px;
+  font:600 12px system-ui,"Segoe UI",sans-serif;cursor:pointer;
+}
+.os-search button{
+  width:44px;height:44px;flex-shrink:0;border:0;border-radius:14px;
+  background:linear-gradient(145deg,#2c7ba2,#355d9d);color:white;
+  font-size:23px;cursor:pointer;
+}
+.os-search button:hover{filter:brightness(1.13)}
+@media(max-width:800px){
+  .os-search{top:74px;height:57px;width:calc(100vw - 28px);gap:6px;padding:6px 7px 6px 12px;border-radius:18px}
+  .os-search select{min-width:96px;max-width:112px;padding:8px 3px;font-size:11px}
+  .os-search button{width:38px;height:40px}
+  .os-search input{font-size:13px}
+  .welcome{top:170px}
+}
