@@ -29,3 +29,31 @@ dialog [hidden]{display:none!important}
 .settings-surface .entry{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:10px 0;padding:10px;border-radius:12px;background:#deebf8}
 .settings-surface .entry .os-app-icon{width:42px;height:42px;color:#215c88;background:#b9d9f1}
 .settings-surface .entry span:not(.os-app-icon){flex:1;min-width:160px;overflow-wrap:anywhere}
+
+
+/* Free-position desktop icons with persistent pointer dragging */
+.desktop{display:block;position:absolute;left:4%;top:19%;width:92%;height:65%;direction:ltr;pointer-events:none}
+.desktop-app{position:absolute;left:0;top:0;display:flex;align-items:center;justify-content:flex-start;width:104px;min-height:110px;touch-action:none;user-select:none;pointer-events:auto;cursor:grab}
+.desktop-app.is-dragging{z-index:15;cursor:grabbing;filter:drop-shadow(0 17px 18px #102b5680)}
+.desktop-app .app-icon{width:76px;height:76px}
+.desktop-app .app-icon:has(.web-app-icon){background:transparent;border:0;box-shadow:none;backdrop-filter:none;border-radius:19px}
+.desktop-app .web-app-icon{height:100%;width:100%;border-radius:18px;background:transparent;overflow:hidden}
+.desktop-app .web-app-icon img{width:100%;height:100%;object-fit:cover;filter:none}
+.launcher-item .web-app-icon{background:transparent}
+.launcher-item .web-app-icon img{width:100%;height:100%;object-fit:cover;filter:none}
+.dock-apps .web-app-icon{background:transparent}
+.dock-apps .web-app-icon img{width:100%;height:100%;object-fit:cover;filter:none}
+.window-titlebar .web-app-icon{background:transparent}
+.window-titlebar .web-app-icon img{width:100%;height:100%;object-fit:cover;filter:none}
+.install-preview .web-app-icon{background:transparent}
+.install-preview .web-app-icon img{width:100%;height:100%;object-fit:cover;filter:none}
+.minimized-apps{display:flex;gap:5px;align-items:center}
+.minimized-apps[hidden]{display:none}
+.minimized-apps:not([hidden]){padding-left:8px;border-left:1px solid #6f91a7aa}
+.dock .minimized-apps button{display:grid;place-items:center;background:#d8e7f6;color:#275071;min-width:46px;height:46px;padding:6px;border:1px solid #9ebfd5}
+.minimized-apps .os-app-icon{width:34px;height:34px;border-radius:9px}
+.minimized-apps .os-app-icon img{width:100%;height:100%;object-fit:cover;filter:none}
+.minimized-apps .native-app-icon svg{width:25px;height:25px}
+.dock{max-width:calc(100vw - 24px);overflow-x:auto;scrollbar-width:thin}
+.window-controls button[title="باز کردن در تب مرورگر"]{background:#cfeaf8;color:#175c86;font-weight:800}
+@media(max-width:800px){.desktop{left:3%;top:39%;width:94%;height:43%}.desktop-app{width:90px;min-height:95px}.desktop-app .app-icon{width:62px;height:62px}}
