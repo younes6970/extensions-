@@ -1,6 +1,6 @@
 'use strict';
 const $=id=>document.getElementById(id);
-const builtins=[{id:'dashboard',name:'Dashboard',icon:'◈',type:'internal',url:'dashboard.html'},{id:'vault',name:'Secure Vault',icon:'♢',type:'internal',url:'vault.html'},{id:'files',name:'File Manager',icon:'▤',type:'files'},{id:'settings',name:'Settings',icon:'⚙',type:'settings'}];
+const builtins=[{id:'files',name:'File Manager',icon:'▤',type:'files'},{id:'settings',name:'Settings',icon:'⚙',type:'settings'}];
 let apps=[],windows=new Map(),z=30,folderFiles=[],files=[],idCounter=0,desktopPositions={};
 const safeUrl=s=>{try{const u=new URL(s);return u.protocol==='https:'?u.href:null}catch{return null}};
 function toast(message){const el=$('toast');el.textContent=message;el.classList.add('visible');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('visible'),4500)}
@@ -41,5 +41,31 @@ $('appSearch').oninput=render;
 $('filesButton').onclick=()=>openApp(builtins[2]);
 $('settingsButton').onclick=()=>openApp(builtins[3]);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('launcher').classList.add('hidden')});
+const searchEngines=Object.freeze({
+  google:'https://www.google.com/search?q=',
+  bing:'https://www.bing.com/search?q=',
+  duckduckgo:'https://duckduckgo.com/?q=',
+  brave:'https://search.brave.com/search?q=',
+  ecosia:'https://www.ecosia.org/search?q=',
+  startpage:'https://www.startpage.com/sp/search?query='
+});
+$('webSearchForm').addEventListener('submit',event=>{
+  event.preventDefault();
+  const query=$('webSearchInput').value.trim();
+  if(!query)return;
+  const engine=$('searchEngine').value;
+  const base=searchEngines[engine]||searchEngines.google;
+  window.open(base+encodeURIComponent(query),'_blank','noopener,noreferrer');
+});
+$('searchEngine').addEventListener('change',async event=>{
+  const engine=event.target.value;
+  if(!Object.hasOwn(searchEngines,engine))return;
+  try{await chrome.storage.local.set({myspaceSearchEngine:engine})}
+  catch{toast('ذخیره موتور جست‌وجو ناموفق بود')}
+});
+chrome.storage.local.get('myspaceSearchEngine').then(result=>{
+  if(Object.hasOwn(searchEngines,result.myspaceSearchEngine))
+    $('searchEngine').value=result.myspaceSearchEngine;
+}).catch(()=>{});
 function clock(){const n=new Date();$('clock').textContent=n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});$('date').textContent=n.toLocaleDateString('fa-IR',{weekday:'long',day:'numeric',month:'long'})}clock();setInterval(clock,15000);
 chrome.storage.local.get(['myspaceInstalledApps','myspaceDesktopPositions']).then(r=>{desktopPositions=r.myspaceDesktopPositions&&typeof r.myspaceDesktopPositions==='object'?r.myspaceDesktopPositions:{};apps=Array.isArray(r.myspaceInstalledApps)?r.myspaceInstalledApps.filter(a=>a&&a.type==='web'&&safeUrl(a.url)&&typeof a.name==='string'&&(!a.customIcon||(typeof a.customIcon==='string'&&a.customIcon.startsWith('data:image/')&&a.customIcon.length<300000))).slice(0,60):[];render()}).catch(()=>render());
